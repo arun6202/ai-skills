@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "title": "The F# Working Set",
+    "subtitle": "a discipline-driven Python\u2192F# library catalogue",
+    "revision": "\u03a6",
+    "note": "Type signatures are stylized identifying marks, not compilable definitions. Verify maintenance/currency for fast-moving areas (web frameworks) before asserting 'best' or 'active'."
+  },
+  "categories": [
+    {
+      "cat": "Core & error handling",
+      "anchor": "toolz \u00b7 functools \u00b7 returns",
+      "items": [
+        { "name": "FsToolkit.ErrorHandling", "id": "FsToolkit.ErrorHandling", "kind": "package", "sig": "result { } : Result<'ok,'err>", "use": "You want Result/Option/asyncResult CEs and traversals as the spine of every boundary." },
+        { "name": "FSharpPlus", "id": "FSharpPlus", "kind": "package", "sig": "Monoid 'm => 'm -> 'm -> 'm", "use": "You want lawful, generic abstractions (functor/monad/monoid) across your own types." },
+        { "name": "FSharpx.Collections", "id": "FSharpx.Collections", "kind": "package", "sig": "'a seq -> PersistentVector<'a>", "use": "You need persistent/immutable structures beyond what FSharp.Core ships." }
+      ]
+    },
+    {
+      "cat": "JSON & serialization",
+      "anchor": "json \u00b7 orjson \u00b7 pydantic",
+      "items": [
+        { "name": "FSharp.SystemTextJson", "id": "FSharp.SystemTextJson", "kind": "package", "sig": "JsonSerializer : 'T <-> Utf8", "use": "You're on System.Text.Json and want DUs/options/records to just work." },
+        { "name": "Thoth.Json", "id": "Thoth.Json.Net", "kind": "package", "sig": "Decoder<'T> -> string -> Result<'T,_>", "use": "You want explicit, Elm-style codecs you control rather than reflection." },
+        { "name": "FsCodec", "id": "FsCodec.SystemTextJson", "kind": "package", "sig": "Event -> Codec -> ReadOnlyMemory<byte>", "use": "Event-stream encode/decode with contract versioning (CDC/ES paths)." }
+      ]
+    },
+    {
+      "cat": "Parsing & validation",
+      "anchor": "pydantic \u00b7 attrs \u00b7 cerberus",
+      "items": [
+        { "name": "Validus", "id": "Validus", "kind": "package", "sig": "Validator<'i,'o> : 'i -> ValidationResult<'o>", "use": "You want composable, accumulating validators returning a typed result." },
+        { "name": "FSharp.Data", "id": "FSharp.Data", "kind": "package", "sig": "[<Literal>] schema \u22a2 ProvidedType", "use": "Parse-at-the-boundary from CSV/JSON/XML/HTML samples via type providers." },
+        { "name": "Refined (roll-your-own)", "id": "\u2014 phantom types \u2014", "kind": "pattern", "sig": "Refined<'T,'P> : 'raw -> Result<_,_>", "use": "You need invariants as proofs at the edge \u2014 your own discipline, no package." }
+      ]
+    },
+    {
+      "cat": "HTTP & web clients",
+      "anchor": "requests \u00b7 httpx",
+      "items": [
+        { "name": "FsHttp", "id": "FsHttp", "kind": "package", "sig": "http { } : Async<Response>", "use": "Any HTTP call \u2014 the DSL + CE make requests genuinely pleasant." }
+      ]
+    },
+    {
+      "cat": "Web frameworks",
+      "anchor": "FastAPI \u00b7 Flask \u00b7 Django",
+      "items": [
+        { "name": "Falco", "id": "Falco", "kind": "package", "sig": "HttpHandler = HttpContext -> Task", "use": "Lightweight, functional-first HTTP. v5 ships first-class HTMX + OpenAPI." },
+        { "name": "Oxpecker", "id": "Oxpecker", "kind": "package", "sig": "EndpointHandler = HttpContext -> Task", "use": "Giraffe's successor \u2014 same model, optimized core, endpoint routing, fullstack." },
+        { "name": "Giraffe", "id": "Giraffe", "kind": "package", "sig": "HttpFunc -> HttpFunc", "use": "Battle-tested combinator web on ASP.NET Core (now back under active maintenance)." },
+        { "name": "Saturn", "id": "Saturn", "kind": "package", "sig": "application { } : IWebHost", "use": "You want a Rails/Django-shaped MVC convention layer over Giraffe." }
+      ]
+    },
+    {
+      "cat": "Data & numerics",
+      "anchor": "pandas \u00b7 numpy \u00b7 pyarrow",
+      "items": [
+        { "name": "Deedle", "id": "Deedle", "kind": "package", "sig": "Frame<'row,'col>", "use": "DataFrame/time-series work with a typed-ish frame and series algebra." },
+        { "name": "Math.NET Numerics", "id": "MathNet.Numerics", "kind": "package", "sig": "Matrix<float> -> Matrix<float>", "use": "Linear algebra, distributions, FFT, solvers \u2014 the numpy/scipy core." },
+        { "name": "FSharp.Stats", "id": "FSharp.Stats", "kind": "package", "sig": "float[] -> Distribution", "use": "Statistics, fitting, ML primitives with an F#-native API." },
+        { "name": "Parquet.Net", "id": "Parquet.Net", "kind": "package", "sig": "Stream <-> RowGroup[]", "use": "Read/write Parquet directly (content-addressed columnar tier)." },
+        { "name": "DuckDB.NET", "id": "DuckDB.NET.Data.Full", "kind": "package", "sig": "sql -> IDataReader", "use": "Embedded analytical SQL over Parquet/Arrow without a server." },
+        { "name": "Plotly.NET", "id": "Plotly.NET", "kind": "package", "sig": "Trace -> GenericChart", "use": "Publication-grade interactive charts \u2014 the matplotlib/plotly answer." }
+      ]
+    },
+    {
+      "cat": "Machine learning",
+      "anchor": "scikit-learn \u00b7 pytorch \u00b7 jax",
+      "items": [
+        { "name": "ML.NET", "id": "Microsoft.ML", "kind": "package", "sig": "IDataView -> ITransformer", "use": "Classical ML pipelines (classification, regression) on .NET data." },
+        { "name": "TorchSharp", "id": "TorchSharp", "kind": "package", "sig": "Tensor -> Tensor", "use": "Full libtorch bindings when you need real deep-learning tensors." },
+        { "name": "DiffSharp / Furnace", "id": "DiffSharp-cpu", "kind": "package", "sig": "(Tensor -> Tensor) -> grad", "use": "F#-native differentiable programming and autodiff, idiomatic and composable." }
+      ]
+    },
+    {
+      "cat": "Databases & SQL",
+      "anchor": "SQLAlchemy \u00b7 psycopg",
+      "items": [
+        { "name": "Dapper.FSharp", "id": "Dapper.FSharp", "kind": "package", "sig": "select { } : Async<'T seq>", "use": "Typed query CEs over Dapper without writing raw SQL strings." },
+        { "name": "Donald", "id": "Donald", "kind": "package", "sig": "IDbConnection -> 'T list", "use": "Thin, functional ADO.NET wrapper \u2014 explicit, no magic." },
+        { "name": "SqlHydra", "id": "SqlHydra.Cli", "kind": "tool", "sig": "schema -> generated 'Types", "use": "Generate F# records + typed query DSL straight from your DB schema." },
+        { "name": "Npgsql", "id": "Npgsql", "kind": "package", "sig": "NpgsqlConnection -> reader", "use": "The Postgres driver underneath everything (catalog substrate)." }
+      ]
+    },
+    {
+      "cat": "Testing & properties",
+      "anchor": "pytest \u00b7 hypothesis",
+      "items": [
+        { "name": "Expecto", "id": "Expecto", "kind": "package", "sig": "Test -> TestResult", "use": "The runner \u2014 tests are values, parallel by default, great with FsCheck." },
+        { "name": "FsCheck", "id": "FsCheck", "kind": "package", "sig": "('a -> bool) -> Property", "use": "Property-based testing \u2014 LWW/arity invariants live here." },
+        { "name": "Hedgehog", "id": "Hedgehog", "kind": "package", "sig": "Gen<'a> -> Property", "use": "Property testing with integrated shrinking and explicit generators." },
+        { "name": "Unquote", "id": "Unquote", "kind": "package", "sig": "<@ expr @> -> step-by-step", "use": "Assertions via quotations \u2014 failures show the reduced expression." }
+      ]
+    },
+    {
+      "cat": "CLI \u00b7 config \u00b7 time \u00b7 logging",
+      "anchor": "typer \u00b7 pendulum \u00b7 structlog",
+      "items": [
+        { "name": "Argu", "id": "Argu", "kind": "package", "sig": "argv -> ParseResults<'Arg>", "use": "Declarative, typed command-line parsing from a DU spec." },
+        { "name": "FsConfig", "id": "FsConfig", "kind": "package", "sig": "reader -> Result<'Config,_>", "use": "Bind environment/app config into typed records with validation." },
+        { "name": "NodaTime", "id": "NodaTime", "kind": "package", "sig": "Instant -> ZonedDateTime", "use": "Any time/zone/duration logic \u2014 never touch raw DateTime again." },
+        { "name": "Serilog", "id": "Serilog", "kind": "package", "sig": "ILogger -> structured event", "use": "Structured logging with rich sinks (or stay on a Writer-monad lineage)." }
+      ]
+    },
+    {
+      "cat": "Concurrency & streaming",
+      "anchor": "asyncio \u00b7 kafka-python \u00b7 faust",
+      "items": [
+        { "name": "FSharp.Control.TaskSeq", "id": "FSharp.Control.TaskSeq", "kind": "package", "sig": "taskSeq { } : IAsyncEnumerable<'a>", "use": "Lazy async sequences \u2014 backfill firehoses and streamed readers." },
+        { "name": "Hopac", "id": "Hopac", "kind": "package", "sig": "Job<'a> -> Async<'a>", "use": "High-throughput CSP-style concurrency when Async isn't enough." },
+        { "name": "FsKafka", "id": "FsKafka", "kind": "package", "sig": "ConsumerConfig -> KafkaConsumer", "use": "Idiomatic Confluent.Kafka wrapper for batched consume/produce." },
+        { "name": "Propulsion", "id": "Propulsion", "kind": "package", "sig": "StreamEvent -> Async<unit>", "use": "Stream scheduler: co-partitioned, checkpointed projection (CDC arm)." },
+        { "name": "Equinox", "id": "Equinox", "kind": "package", "sig": "Decider<'e,'s> -> Async<'r>", "use": "Event-sourced deciders with consistent state over a store." }
+      ]
+    },
+    {
+      "cat": "Toolchain & the rest",
+      "anchor": "black \u00b7 poetry \u00b7 jupyter \u00b7 sympy",
+      "items": [
+        { "name": "Fantomas", "id": "fantomas", "kind": "tool", "sig": "unformatted -> formatted", "use": "The formatter \u2014 the black/ruff of F#." },
+        { "name": "Paket", "id": "Paket", "kind": "tool", "sig": "paket.dependencies -> lock", "use": "Deterministic, transitive-pinned dependency management." },
+        { "name": ".NET Interactive", "id": "Microsoft.dotnet-interactive", "kind": "tool", "sig": "cell -> output", "use": "Polyglot notebooks \u2014 the Jupyter story for F#." },
+        { "name": "Math.NET Symbolics", "id": "MathNet.Symbolics", "kind": "package", "sig": "Expression -> Expression", "use": "Symbolic algebra/CAS when you need sympy-style manipulation." },
+        { "name": "FSharp.Data.GraphQL", "id": "FSharp.Data.GraphQL.Server", "kind": "package", "sig": "Schema -> Executor", "use": "Build or consume GraphQL with an F#-typed schema." },
+        { "name": "Feliz + Fable", "id": "Feliz", "kind": "package", "sig": "props -> ReactElement", "use": "F# on the frontend \u2014 typed React via Fable (or Oxpecker.Solid)." }
+      ]
+    }
+  ]
+}

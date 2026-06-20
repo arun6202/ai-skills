@@ -1,0 +1,419 @@
+<!-- TEMPLATE: the const DATA assignment below is filled from references/catalogue.json by scripts/build_card.py -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The F# Working Set — a field kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E7E5DD;
+    --paper-2:#EEEDE6;
+    --ink:#1B1D22;
+    --ink-2:#4F545C;
+    --ink-3:#878B92;
+    --line:#CBC9BF;
+    --line-soft:#D8D6CC;
+    --accent:#2F4C74;
+    --accent-soft:#5C79A6;
+    --invert-bg:#15171B;
+    --invert-paper:#DCDAD0;
+    --invert-line:#33363D;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(var(--line-soft) 0.6px, transparent 0.6px);
+    background-size:22px 22px;
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- masthead ---------- */
+  .mast{padding:64px 0 28px;border-bottom:1.5px solid var(--ink)}
+  .mast__eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 18px;
+  }
+  .mast__title{
+    font-family:"Fraunces",serif;
+    font-weight:500;
+    font-size:clamp(2.5rem,7vw,4.6rem);
+    line-height:0.96;
+    letter-spacing:-0.01em;
+    margin:0 0 18px;
+  }
+  .mast__title em{font-style:italic;font-weight:400;color:var(--accent)}
+  .mast__lede{
+    max-width:60ch;font-size:1.06rem;color:var(--ink-2);margin:0 0 26px;
+  }
+  .mast__sig{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.86rem;color:var(--ink);
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    padding:12px 16px;border-radius:2px;
+    overflow-x:auto;white-space:nowrap;
+  }
+  .mast__sig .kw{color:var(--accent);font-weight:500}
+  .mast__sig .dim{color:var(--ink-3)}
+  .mast__meta{
+    display:flex;gap:26px;flex-wrap:wrap;margin-top:26px;
+    font-family:"IBM Plex Mono",monospace;font-size:0.74rem;
+    letter-spacing:0.04em;color:var(--ink-3);text-transform:uppercase;
+  }
+  .mast__meta b{color:var(--ink);font-weight:500}
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:flex;gap:28px;flex-wrap:wrap;
+    padding:18px 0;border-bottom:1px solid var(--line);
+    font-size:0.82rem;color:var(--ink-2);
+  }
+  .legend__item{display:flex;align-items:center;gap:9px}
+  .legend__swatch{
+    font-family:"IBM Plex Mono",monospace;font-size:0.72rem;
+    padding:2px 7px;border-radius:2px;border:1px solid var(--line);
+    background:var(--paper-2);color:var(--ink-2);
+  }
+  .legend__swatch--sig{border-left:2px solid var(--accent);color:var(--accent)}
+  .legend__swatch--use{border:none;background:none;color:var(--accent);padding:0;font-size:0.95rem}
+
+  /* ---------- controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;margin-bottom:8px;
+  }
+  .controls__inner{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .search{
+    flex:1 1 220px;min-width:180px;
+    display:flex;align-items:center;gap:8px;
+    background:var(--paper-2);border:1px solid var(--line);border-radius:2px;
+    padding:8px 12px;
+  }
+  .search input{
+    border:none;background:none;outline:none;width:100%;
+    font-family:"IBM Plex Mono",monospace;font-size:0.84rem;color:var(--ink);
+  }
+  .search input::placeholder{color:var(--ink-3)}
+  .search__glyph{font-family:"IBM Plex Mono",monospace;color:var(--accent);font-size:0.8rem}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:0.72rem;
+    letter-spacing:0.03em;
+    padding:5px 11px;border-radius:2px;cursor:pointer;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .chip:hover{border-color:var(--accent-soft);color:var(--ink)}
+  .chip.is-active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+  /* ---------- category band ---------- */
+  .cat{padding:40px 0 8px;border-top:1px solid var(--line);scroll-margin-top:74px}
+  .cat:first-of-type{border-top:none}
+  .cat__head{
+    display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:baseline;
+    margin-bottom:22px;
+  }
+  .cat__num{
+    font-family:"Fraunces",serif;font-weight:500;font-style:italic;
+    font-size:2.4rem;line-height:1;color:var(--accent);
+  }
+  .cat__titles{display:flex;flex-direction:column;gap:4px}
+  .cat__name{
+    font-family:"Fraunces",serif;font-weight:500;font-size:1.5rem;
+    line-height:1.05;margin:0;letter-spacing:-0.005em;
+  }
+  .cat__anchor{
+    font-family:"IBM Plex Mono",monospace;font-size:0.74rem;color:var(--ink-3);
+    letter-spacing:0.03em;
+  }
+  .cat__anchor b{color:var(--accent-soft);font-weight:500}
+
+  /* ---------- specimen grid ---------- */
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft)}
+  .spec{
+    background:var(--paper);
+    padding:16px 18px;
+    display:flex;flex-direction:column;gap:8px;
+    transition:background .15s;
+  }
+  .spec:hover{background:var(--paper-2)}
+  .spec__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .spec__name{font-weight:600;font-size:1.02rem;letter-spacing:-0.005em}
+  .spec__id{
+    font-family:"IBM Plex Mono",monospace;font-size:0.72rem;
+    color:var(--ink-2);background:var(--paper-2);
+    border:1px solid var(--line);border-radius:2px;
+    padding:3px 8px;cursor:pointer;white-space:nowrap;
+    transition:border-color .15s,color .15s;
+    max-width:48%;overflow:hidden;text-overflow:ellipsis;
+  }
+  .spec__id:hover{border-color:var(--accent);color:var(--accent)}
+  .spec__id.is-copied{border-color:var(--accent);color:var(--accent);background:#E4E9F1}
+  .spec__sig{
+    font-family:"IBM Plex Mono",monospace;font-size:0.78rem;
+    color:var(--accent);border-left:2px solid var(--line);
+    padding-left:10px;line-height:1.4;overflow-x:auto;white-space:nowrap;
+  }
+  .spec__use{font-size:0.9rem;color:var(--ink-2);line-height:1.45}
+  .spec__use::before{content:"◆ ";color:var(--accent);font-size:0.7em;vertical-align:1px}
+  .spec__tag{
+    align-self:flex-start;
+    font-family:"IBM Plex Mono",monospace;font-size:0.64rem;
+    letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--ink-3);border:1px solid var(--line);border-radius:2px;
+    padding:1px 6px;
+  }
+
+  /* ---------- doctrine (inverted) ---------- */
+  .doctrine{
+    margin:56px 0 0;background:var(--invert-bg);color:var(--invert-paper);
+    border-radius:3px;padding:40px 36px;
+  }
+  .doctrine__eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:0.7rem;
+    letter-spacing:0.22em;text-transform:uppercase;color:var(--accent-soft);margin:0 0 14px;
+  }
+  .doctrine__title{
+    font-family:"Fraunces",serif;font-weight:500;font-size:1.7rem;
+    margin:0 0 8px;color:#fff;letter-spacing:-0.01em;
+  }
+  .doctrine__lede{max-width:62ch;color:#B9B7AD;margin:0 0 26px;font-size:1rem}
+  .doctrine__grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--invert-line)}
+  .gap{background:var(--invert-bg);padding:16px 18px}
+  .gap__h{
+    font-family:"IBM Plex Mono",monospace;font-size:0.74rem;letter-spacing:0.04em;
+    text-transform:uppercase;color:var(--accent-soft);margin:0 0 6px;
+  }
+  .gap__b{font-size:0.92rem;color:#C7C5BB;line-height:1.5}
+  .doctrine__close{
+    margin-top:26px;padding-top:22px;border-top:1px solid var(--invert-line);
+    font-family:"Fraunces",serif;font-style:italic;font-size:1.12rem;color:#E7E5DD;
+    max-width:60ch;
+  }
+
+  /* ---------- footer ---------- */
+  .foot{
+    padding:40px 0 64px;margin-top:48px;border-top:1.5px solid var(--ink);
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    font-family:"IBM Plex Mono",monospace;font-size:0.72rem;
+    color:var(--ink-3);letter-spacing:0.03em;
+  }
+  .foot b{color:var(--ink-2);font-weight:500}
+
+  .empty{
+    padding:48px 0;text-align:center;color:var(--ink-3);
+    font-family:"IBM Plex Mono",monospace;font-size:0.85rem;
+  }
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(10px)}
+  .reveal.is-in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+
+  @media (max-width:760px){
+    .specs{grid-template-columns:1fr}
+    .doctrine__grid{grid-template-columns:1fr}
+    .mast{padding-top:44px}
+    .cat__num{font-size:1.9rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    *{scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <p class="mast__eyebrow">Field Kit · F# Working Set · rev Φ</p>
+    <h1 class="mast__title">The libraries a<br><em>typed officer</em> reaches for.</h1>
+    <p class="mast__lede">A specimen catalogue of the F# ecosystem, mapped against the Python batteries you'd otherwise miss. Each entry carries its NuGet name, an identifying type signature, and the one situation it's for. Honest about where the kit runs thin.</p>
+    <div class="mast__sig"><span class="dim">// the doctrine, as a signature</span><br><span class="kw">let</span> reach : Need <span class="kw">-&gt;</span> Library = Need.classify <span class="kw">&gt;&gt;</span> pick <span class="dim">// not import-at-runtime, but prove-at-boundary</span></div>
+    <div class="mast__meta">
+      <span><b id="count-libs">—</b> entries</span>
+      <span><b id="count-cats">—</b> families</span>
+      <span>tap a <b>nuget id</b> to copy</span>
+    </div>
+  </header>
+
+  <div class="legend">
+    <div class="legend__item"><span class="legend__swatch">Package.Id</span> NuGet name — tap to copy</div>
+    <div class="legend__item"><span class="legend__swatch legend__swatch--sig">'a -&gt; 'b</span> identifying type signature</div>
+    <div class="legend__item"><span class="legend__swatch legend__swatch--use">◆</span> use when</div>
+  </div>
+
+  <div class="controls">
+    <div class="controls__inner">
+      <label class="search">
+        <span class="search__glyph">/</span>
+        <input id="search" type="text" placeholder="filter by name, id, or need…" autocomplete="off" spellcheck="false" />
+      </label>
+      <div class="chips" id="chips"></div>
+    </div>
+  </div>
+
+  <main id="catalogue"></main>
+
+  <section class="doctrine reveal">
+    <p class="doctrine__eyebrow">Where the kit runs thin</p>
+    <h2 class="doctrine__title">The batteries Python still owns.</h2>
+    <p class="doctrine__lede">No boosterism. These are the corners where Python's depth, community, and sheer surface area still win, and where reaching for .NET interop is a compromise rather than a pleasure.</p>
+    <div class="doctrine__grid">
+      <div class="gap"><p class="gap__h">Exploratory data science</p><p class="gap__b">pandas/seaborn muscle memory and notebook-density. Deedle + Plotly.NET are good; the ecosystem around them is not Python's.</p></div>
+      <div class="gap"><p class="gap__h">The scientific stack</p><p class="gap__b">scipy / statsmodels breadth. Math.NET and FSharp.Stats cover the common path, not the long tail of specialised methods.</p></div>
+      <div class="gap"><p class="gap__h">Pretrained-model ecosystems</p><p class="gap__b">grab-a-model-and-go. TorchSharp and ML.NET work, but the model zoo and tutorials live in Python.</p></div>
+      <div class="gap"><p class="gap__h">Glue-script velocity</p><p class="gap__b">throwaway one-file scripts. F# scripting (.fsx) is real but the dynamic-glue corner is Python's home turf.</p></div>
+    </div>
+    <p class="doctrine__close">F# wins the opposite trade: when the pipeline itself must be typed, total, and provable — your domain exactly. Spend the freedom there.</p>
+  </section>
+
+  <footer class="foot">
+    <span>The F# Working Set · a field reference, not a leaderboard</span>
+    <span><b>tip:</b> /​ to focus filter · esc to clear</span>
+  </footer>
+
+</div>
+
+<script>
+const DATA = __CATALOGUE__;
+
+const cat = document.getElementById('catalogue');
+const chips = document.getElementById('chips');
+const search = document.getElementById('search');
+
+const totalLibs = DATA.reduce((n,c)=>n+c.items.length,0);
+document.getElementById('count-libs').textContent = totalLibs;
+document.getElementById('count-cats').textContent = DATA.length;
+
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+// chips
+let activeCat = null;
+const allChip = mkChip('all', null, true);
+chips.appendChild(allChip);
+DATA.forEach(c => chips.appendChild(mkChip(c.cat.split(' ')[0].toLowerCase(), c.cat)));
+
+function mkChip(label, value, active){
+  const b = document.createElement('button');
+  b.className = 'chip' + (active ? ' is-active' : '');
+  b.textContent = label;
+  b.addEventListener('click', () => {
+    activeCat = value;
+    [...chips.children].forEach(ch => ch.classList.remove('is-active'));
+    b.classList.add('is-active');
+    if(value){
+      const el = document.getElementById('cat-' + slug(value));
+      if(el) el.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto':'smooth', block:'start'});
+    }
+    render();
+  });
+  return b;
+}
+
+function render(){
+  const q = search.value.trim().toLowerCase();
+  cat.innerHTML = '';
+  let shown = 0;
+  DATA.forEach((c, i) => {
+    if(activeCat && c.cat !== activeCat) return;
+    const matched = c.items.filter(it =>
+      !q || (it.name + ' ' + it.id + ' ' + it.use + ' ' + c.cat).toLowerCase().includes(q));
+    if(matched.length === 0) return;
+    shown += matched.length;
+
+    const sec = document.createElement('section');
+    sec.className = 'cat reveal';
+    sec.id = 'cat-' + slug(c.cat);
+    sec.innerHTML = `
+      <div class="cat__head">
+        <div class="cat__num">${String(i+1).padStart(2,'0')}</div>
+        <div class="cat__titles">
+          <h2 class="cat__name">${c.cat}</h2>
+          <span class="cat__anchor">≈ <b>${c.anchor}</b></span>
+        </div>
+      </div>`;
+    const grid = document.createElement('div');
+    grid.className = 'specs';
+    matched.forEach(it => {
+      const card = document.createElement('article');
+      card.className = 'spec';
+      card.innerHTML = `
+        <div class="spec__top">
+          <span class="spec__name">${it.name}</span>
+          <span class="spec__id" role="button" tabindex="0" data-id="${it.id}" title="copy ${it.id}">${it.id}</span>
+        </div>
+        <div class="spec__sig">${esc(it.sig)}</div>
+        <div class="spec__use">${it.use}</div>${it.kind ? `<span class="spec__tag">${it.kind}</span>` : ''}`;
+      grid.appendChild(card);
+    });
+    sec.appendChild(grid);
+    cat.appendChild(sec);
+  });
+
+  if(shown === 0){
+    cat.innerHTML = '<div class="empty">no entries match — clear the filter to see the full kit</div>';
+  }
+  wireCopy();
+  observe();
+}
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function wireCopy(){
+  document.querySelectorAll('.spec__id').forEach(el => {
+    const copy = () => {
+      const id = el.dataset.id;
+      const done = () => { el.classList.add('is-copied'); const t=el.textContent; el.textContent='copied ✓';
+        setTimeout(()=>{el.classList.remove('is-copied'); el.textContent=id;},1100); };
+      if(navigator.clipboard){ navigator.clipboard.writeText(id).then(done).catch(fallback); }
+      else fallback();
+      function fallback(){ const ta=document.createElement('textarea'); ta.value=id; document.body.appendChild(ta);
+        ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); done(); }
+    };
+    el.addEventListener('click', copy);
+    el.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();copy();} });
+  });
+}
+
+let io;
+function observe(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('is-in')); return;
+  }
+  if(io) io.disconnect();
+  io = new IntersectionObserver((entries)=>{
+    entries.forEach((e,idx)=>{ if(e.isIntersecting){ e.target.style.transitionDelay=(Math.min(idx,5)*40)+'ms';
+      e.target.classList.add('is-in'); io.unobserve(e.target);} });
+  },{threshold:0.06});
+  document.querySelectorAll('.reveal:not(.is-in)').forEach(el=>io.observe(el));
+}
+
+search.addEventListener('input', render);
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && document.activeElement!==search){ e.preventDefault(); search.focus(); }
+  if(e.key==='Escape' && document.activeElement===search){ search.value=''; search.blur(); render(); }
+});
+
+render();
+// reveal the doctrine block too
+observe();
+</script>
+</body>
+</html>
